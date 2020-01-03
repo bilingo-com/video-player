@@ -1,0 +1,31 @@
+.component {
+    position: relative;
+    font-family: Helvetica;
+    font-size: 11px;
+    background-color: #000;
+    width: 100%;
+}
+
+.video {
+    width: 100%;
+    height: 100%;
+}
+
+.controls {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    height: 34px;
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: flex;
+}
+
+.seek {
+    flex-grow: 1;
+}
+
+.component:hover .controls {
+    opacity: 1;
+}

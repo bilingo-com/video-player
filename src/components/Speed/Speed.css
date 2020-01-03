@@ -1,0 +1,58 @@
+.component:hover {
+    background-color: #000;
+}
+
+.button {
+    width: 34px;
+    height: 34px;
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button:focus {
+    outline: 0;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+}
+
+.speedList {
+    position: absolute;
+    bottom: 100%;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.7);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #fff;
+}
+
+.component:hover .speedList {
+    display: block;
+}
+
+.speedItem {
+    padding: 7px;
+    cursor: pointer;
+}
+
+.activeSpeedItem,
+.speedItem:hover {
+    background: #000;
+}
+
+.activeSpeedItem {
+    composes: speedItem;
+    text-decoration: underline;
+}
