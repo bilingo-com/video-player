@@ -188,3 +188,5 @@ const connectedPlayer = videoConnect(
 );
 
 export default connectedPlayer;
+
+export { Time, Seek, Volume, Captions, PlayPause, Fullscreen, Overlay };
