@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import DefaultPlayer from '../../lib/index'; // eslint-disabled-line
 import '../../lib/styles.css'; // eslint-disabled-line
-
 import poster from './assets/1.png';
 const sintelTrailer =
   'https://download.blender.org/durian/trailer/sintel_trailer-720p.mp4';
 
 class App extends Component {
-  componentDidMount() {
-    // console.log(Fullscreen);
-  }
   render() {
     return (
       <div>
