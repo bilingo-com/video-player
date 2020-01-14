@@ -305,6 +305,9 @@
     border: 0;
     color: inherit;
     font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: 0;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -344,4 +347,32 @@
     height: 60px;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
+}
+.EtMO64tOBbl2qJ2QrX28H:hover {
+    background-color: #000;
+}
+
+.R5Yln1Q-cQsBBIPutufaX {
+    width: 34px;
+    height: 34px;
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.R5Yln1Q-cQsBBIPutufaX:focus {
+    outline: 0;
+}
+
+.SdXCwcTdQk7ZlRQ3NxXxw {
+    width: 24px;
+    height: 24px;
 }

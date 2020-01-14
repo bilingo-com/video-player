@@ -42,12 +42,31 @@ export const toggleMute = (videoEl, { volume, muted }) => {
   }
 };
 
+export const togglePictureInPicture = (videoEl, callback) => {
+  if (!document.pictureInPictureElement) {
+    videoEl.requestPictureInPicture().catch(error => {
+      // Video failed to enter Picture-in-Picture mode.
+    });
+  } else {
+    document.exitPictureInPicture().catch(error => {
+      // Video failed to leave Picture-in-Picture mode.
+    });
+  }
+};
+
 export const toggleFullscreen = (videoEl, callback) => {
-  videoEl.requestFullScreen =
-    videoEl.requestFullscreen ||
-    videoEl.msRequestFullscreen ||
-    videoEl.mozRequestFullScreen ||
-    videoEl.webkitRequestFullscreen;
+  let el = videoEl;
+  if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+    el.requestFullScreen = el.webkitEnterFullscreen;
+  } else {
+    el = videoEl.parentElement;
+    el.requestFullScreen =
+      el.requestFullScreen ||
+      el.msRequestFullscreen ||
+      el.mozRequestFullScreen ||
+      el.webkitRequestFullscreen;
+  }
+
   document.exitFullscreen =
     document.exitFullscreen ||
     document.msExitFullscreen ||
@@ -58,14 +77,14 @@ export const toggleFullscreen = (videoEl, callback) => {
     document.msFullscreenElement ||
     document.mozFullScreenElement ||
     document.webkitFullscreenElement;
-  if (fullscreenElement === videoEl) {
+  if (fullscreenElement === el) {
     document.querySelector('video').style.maxHeight = '100%';
     window.fullscreen = false;
     document.exitFullscreen();
   } else {
     document.querySelector('video').style.maxHeight = '100%';
     window.fullscreen = true;
-    videoEl.requestFullScreen();
+    el.requestFullScreen();
   }
 };
 

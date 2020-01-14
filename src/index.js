@@ -10,10 +10,10 @@ import DefaultPlayer, {
   Overlay,
 } from './player';
 
-export default DefaultPlayer;
 export {
-  videoConnect,
+  videoConnect as default,
   apiHelpers,
+  DefaultPlayer,
   Time,
   Seek,
   Volume,

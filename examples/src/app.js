@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import DefaultPlayer from '../../lib/index'; // eslint-disabled-line
+import { DefaultPlayer } from '../../lib/index'; // eslint-disabled-line
 import '../../lib/styles.css'; // eslint-disabled-line
 import poster from './assets/1.png';
 const sintelTrailer =
@@ -49,7 +49,7 @@ class App extends Component {
           ])}
           //   poster={bigBuckBunnyPoster}
         >
-          <source src={sintelTrailer} type="video/mp4" />
+          <source src="./assets/1.mp4" type="video/mp4" />
         </DefaultPlayer>
       </div>
     );

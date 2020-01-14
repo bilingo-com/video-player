@@ -14,6 +14,7 @@ import {
   toggleFullscreen,
   getPercentagePlayed,
   getPercentageBuffered,
+  togglePictureInPicture,
 } from './utils/api';
 import styles from './player.css';
 import Time from './components/Time/Time';
@@ -24,6 +25,7 @@ import Speed from './components/Speed/Speed';
 import PlayPause from './components/PlayPause/PlayPause';
 import Fullscreen from './components/Fullscreen/Fullscreen';
 import Overlay from './components/Overlay/Overlay';
+import PictureInPicture from './components/PictureInPicture/PictureInPicture';
 
 const DefaultPlayer = ({
   copy,
@@ -41,16 +43,22 @@ const DefaultPlayer = ({
   onFullscreenClick,
   onCaptionsItemClick,
   onSpeedsItemClick,
+  onPictureInPictureClick,
   ...restProps
 }) => {
   let playbackrates = restProps['data-playbackrates'];
   if (playbackrates) {
     playbackrates = JSON.parse(playbackrates);
   }
-  const { onScreenClickCallback } = restProps;
+  const { onScreenClickCallback, onPictureInPictureClickCallback } = restProps;
   return (
     <div className={[styles.component, className].join(' ')} style={style}>
-      <video className={styles.video} {...restProps}>
+      <video
+        className={styles.video}
+        {...restProps}
+        playsInline={true}
+        wekit-playsinline="true"
+      >
         {children}
       </video>
       <Overlay onClick={onPlayPauseClick} {...video} />
@@ -114,6 +122,19 @@ const DefaultPlayer = ({
                     {...video}
                   />
                 ) : null;
+
+              case 'PictureInPicture':
+                return (
+                  <PictureInPicture
+                    key={i}
+                    ariaLabel={copy.fullscreen}
+                    onClick={onPictureInPictureClick}
+                    onPictureInPictureClickCallback={
+                      onPictureInPictureClickCallback
+                    }
+                    {...video}
+                  />
+                );
               case 'Fullscreen':
                 return (
                   <Fullscreen
@@ -140,6 +161,7 @@ const controls = [
   'Time',
   'Volume',
   'Speed',
+  'PictureInPicture',
   'Fullscreen',
   'Captions',
 ];
@@ -174,7 +196,8 @@ const connectedPlayer = videoConnect(
     },
   }),
   (videoEl, state) => ({
-    onFullscreenClick: () => toggleFullscreen(videoEl.parentElement),
+    onPictureInPictureClick: () => togglePictureInPicture(videoEl),
+    onFullscreenClick: () => toggleFullscreen(videoEl),
     onVolumeClick: () => toggleMute(videoEl, state),
     onCaptionsClick: () => toggleTracks(state),
     onSpeedClick: () => toggleSpeeds(videoEl, state),
