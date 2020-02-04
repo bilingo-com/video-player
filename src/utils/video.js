@@ -32,7 +32,9 @@ export default (
     constructor(props) {
       super(props);
       this.updateState = this.updateState.bind(this);
-      this.state = {};
+      this.state = {
+        videoEl: null,
+      };
       this.el = createRef();
     }
 
@@ -127,13 +129,16 @@ export default (
 
     componentDidMount() {
       this.videoEl = this.el.current.getElementsByTagName('video')[0];
+      this.setState({
+        videoEl: this.videoEl,
+      });
       this.bindEventsToUpdateState();
     }
 
     render() {
       const stateProps = mapStateToProps(this.state, this.props);
       const videoElProps = mapVideoElToProps(
-        this.videoEl,
+        this.state.videoEl,
         this.state,
         this.props,
       );
