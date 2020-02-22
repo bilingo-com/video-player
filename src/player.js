@@ -30,6 +30,9 @@ import PictureInPicture from './components/PictureInPicture/PictureInPicture';
 const DefaultPlayer = ({
   copy,
   video,
+  hls,
+  hlsConfig,
+  hlsUrl,
   style,
   controls,
   children,

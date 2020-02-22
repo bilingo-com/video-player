@@ -4,6 +4,7 @@
  * all its PROPERTIES available as props.
  */
 import React, { Component, createRef } from 'react';
+import HLS from 'hls.js';
 import { EVENTS, PROPERTIES, TRACKEVENTS } from './constants';
 
 const defaultMapStateToProps = (state = {}) => ({
@@ -31,14 +32,55 @@ export default (
   class Video extends Component {
     constructor(props) {
       super(props);
-      this.updateState = this.updateState.bind(this);
       this.state = {
         videoEl: null,
       };
       this.el = createRef();
     }
 
-    updateState() {
+    componentWillUnmount() {
+      this.unbindEvents();
+    }
+
+    componentDidMount() {
+      this.videoEl = this.el.current.getElementsByTagName('video')[0];
+      this.setState({
+        videoEl: this.videoEl,
+      });
+      this.bindEventsToUpdateState();
+      this.initHLSPlayer();
+    }
+
+    initHLSPlayer = () => {
+      const { hls: isHls, hlsConfig = {}, hlsUrl } = this.props;
+      if (isHls && HLS.isSupported() && this.videoEl) {
+        const hls = new HLS(hlsConfig);
+        hls.attachMedia(this.videoEl);
+        hls.on(HLS.Events.MEDIA_ATTACHED, () => {
+          hls.loadSource(hlsUrl);
+          hls.on(HLS.Events.MANIFEST_PARSED, () => {
+            this.videoEl.muted = true;
+            this.videoEl.play();
+          });
+        });
+        hls.on(HLS.Events.ERROR, function(_, data) {
+          if (data.fatal) {
+            switch (data.type) {
+              case HLS.ErrorTypes.NETWORK_ERROR:
+                hls.startLoad();
+                break;
+              case HLS.ErrorTypes.MEDIA_ERROR:
+                hls.recoverMediaError();
+                break;
+              default:
+                break;
+            }
+          }
+        });
+      }
+    };
+
+    updateState = () => {
       this.setState(
         PROPERTIES.reduce((p, c) => {
           p[c] = this.videoEl && this.videoEl[c];
@@ -52,7 +94,7 @@ export default (
           return p;
         }, {}),
       );
-    }
+    };
 
     bindEventsToUpdateState() {
       EVENTS.forEach(event => {
@@ -121,18 +163,6 @@ export default (
           ? lastSource.removeEventListener('error', this.updateState)
           : lastSource.detachEvent('onerror', this.updateState);
       }
-    }
-
-    componentWillUnmount() {
-      this.unbindEvents();
-    }
-
-    componentDidMount() {
-      this.videoEl = this.el.current.getElementsByTagName('video')[0];
-      this.setState({
-        videoEl: this.videoEl,
-      });
-      this.bindEventsToUpdateState();
     }
 
     render() {
