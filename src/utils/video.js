@@ -59,8 +59,8 @@ export default (
         hls.on(HLS.Events.MEDIA_ATTACHED, () => {
           hls.loadSource(hlsUrl);
           hls.on(HLS.Events.MANIFEST_PARSED, () => {
-            this.videoEl.muted = true;
-            this.videoEl.play();
+            // this.videoEl.muted = true;
+            // this.videoEl.play();
           });
         });
         hls.on(HLS.Events.ERROR, function(_, data) {

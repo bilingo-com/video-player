@@ -18,6 +18,7 @@ class App extends Component {
             style={{ width: '100%', height: 500 }}
             poster={poster}
             hls
+            hlsConfig={{}} //可选 refer hls.js
             hlsUrl="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
           />
         </div>
