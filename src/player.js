@@ -59,7 +59,7 @@ const DefaultPlayer = ({
       <video
         className={styles.video}
         {...restProps}
-        playsInline={true}
+        playsInline
         wekit-playsinline="true"
       >
         {children}

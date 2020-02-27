@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /**
  * This is a HoC that finds a single
  * <video> in a component and makes
@@ -36,6 +37,7 @@ export default (
         videoEl: null,
       };
       this.el = createRef();
+      this.hls = null;
     }
 
     componentWillUnmount() {
@@ -51,26 +53,47 @@ export default (
       this.initHLSPlayer();
     }
 
-    initHLSPlayer = () => {
-      const { hls: isHls, hlsConfig = {}, hlsUrl } = this.props;
+    UNSAFE_componentWillReceiveProps(nextProps) {
+      // 切换播放
+      // 如果之前不是hls，切换到了hls
+      // 如果都是hls，只是修改了hls地址
+      // 如果之前是hls，切换到非hls（TODO）
+      if (!this.props.hls && nextProps.hls) {
+        this.initHLSPlayer();
+      } else if (nextProps.hls && this.props.hlsUrl != nextProps.hlsUrl) {
+        this.initHLSPlayer(nextProps.hlsUrl);
+      }
+    }
+
+    initHLSPlayer = nextUrl => {
+      const { hls: isHls, hlsConfig = {} } = this.props;
+      let { hlsUrl } = this.props;
+      if (nextUrl) {
+        hlsUrl = nextUrl;
+      }
       if (isHls && HLS.isSupported() && this.videoEl) {
-        const hls = new HLS(hlsConfig);
-        hls.attachMedia(this.videoEl);
-        hls.on(HLS.Events.MEDIA_ATTACHED, () => {
-          hls.loadSource(hlsUrl);
-          hls.on(HLS.Events.MANIFEST_PARSED, () => {
+        // 如果是切换url，必须保证之前的destroy
+        if (this.hls) {
+          this.hls.destroy();
+          this.hls = null;
+        }
+        this.hls = new HLS(hlsConfig);
+        this.hls.loadSource(hlsUrl);
+        this.hls.attachMedia(this.videoEl);
+        this.hls.on(HLS.Events.MEDIA_ATTACHED, () => {
+          this.hls.on(HLS.Events.MANIFEST_PARSED, () => {
             // this.videoEl.muted = true;
             // this.videoEl.play();
           });
         });
-        hls.on(HLS.Events.ERROR, function(_, data) {
+        this.hls.on(HLS.Events.ERROR, function(_, data) {
           if (data.fatal) {
             switch (data.type) {
               case HLS.ErrorTypes.NETWORK_ERROR:
-                hls.startLoad();
+                this.hls.startLoad();
                 break;
               case HLS.ErrorTypes.MEDIA_ERROR:
-                hls.recoverMediaError();
+                this.hls.recoverMediaError();
                 break;
               default:
                 break;
