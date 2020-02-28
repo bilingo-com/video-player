@@ -1,6 +1,6 @@
 {
   "name": "@bilingo/video-player",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A video player for ReactJs",
   "main": "lib/index.js",
   "scripts": {
