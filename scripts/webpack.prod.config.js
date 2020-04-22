@@ -2,6 +2,7 @@ const path = require('path');
 const merge = require('webpack-merge');
 const baseConfig = require('./webpack.base.js');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const prodConfig = {
   mode: 'production',
@@ -23,6 +24,7 @@ const prodConfig = {
     new MiniCssExtractPlugin({
       filename: 'styles.css',
     }),
+    new BundleAnalyzerPlugin(),
   ],
 
   externals: {
